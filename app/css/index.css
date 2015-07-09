@@ -1,0 +1,32 @@
+body{
+    padding-top: 20px;
+}
+.containerRow{
+    padding: 0 15px;
+}
+.phones {
+    list-style: none;
+}
+.phones li {
+    clear: both;
+    height: 115px;
+    padding-top: 15px;
+}
+.thumbnail {
+    display: block;
+    padding: 4px;
+    margin-bottom: 20px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    -webkit-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+.thumb {
+    float: left;
+    margin: -0.5em 1em 1.5em 0;
+    padding-bottom: 1em;
+    height: 100px;
+    width: 100px;
+}
