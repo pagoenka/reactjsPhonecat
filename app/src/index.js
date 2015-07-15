@@ -1,3 +1,23 @@
+requirejs.config({
+  "paths": {
+    "react-router": "//cdnjs.cloudflare.com/ajax/libs/react-router/0.13.3/ReactRouter",
+    "react": "lib/react.min",
+    "jquery": "lib/jquery-1.11.1.min"
+  },
+  shim: {
+    "react-router": {
+      deps: ['react']
+    }
+  }
+});
+
+require(['react', 'react-router', 'jquery'], function (React, ReactRouter, $) {
+  var Router = ReactRouter;
+  var Route = ReactRouter.Route;
+  var Link = ReactRouter.Link;
+
+
+
 
 var PhoneRow = React.createClass({
   render: function() {
@@ -87,6 +107,13 @@ var SearchBar = React.createClass({
   }
 });
 
+var PhoneDetail = React.createClass({
+  render: function() {
+    var phoneId = this.props.params.phoneId;
+    return (<div>{phoneId}</div>);
+  }
+});
+
 var Phonecat = React.createClass({
       getInitialState: function() {
         return {
@@ -141,5 +168,24 @@ var Phonecat = React.createClass({
 );
 }
 });
+  var RouteHandler = Router.RouteHandler;
+  var App = React.createClass({
+    render () {
+      return (
+            <RouteHandler/>
+      )
+    }
+  });
 
-React.render(<Phonecat />, document.body);
+  var routes = (
+      <Route handler={App}>
+        <Route path="" handler={Phonecat}/>
+        <Route path="phones/:phoneId" handler={PhoneDetail}/>
+      </Route>
+  );
+
+  Router.run(routes, Router.HashLocation, function(Root){
+    React.render(<Root/>, document.body);
+  });
+
+});
