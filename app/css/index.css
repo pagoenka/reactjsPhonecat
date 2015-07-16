@@ -30,3 +30,93 @@ body{
     height: 100px;
     width: 100px;
 }
+
+.phone-images {
+    background-color: #FFF;
+    width: 450px;
+    height: 450px;
+    overflow: hidden;
+    position: relative;
+    float: left;
+}
+
+h1 {
+    border-bottom: 1px solid #808080;
+}
+
+p {
+    margin: 0 0 10px;
+}
+
+.phone-images {
+    background-color: #FFF;
+    width: 450px;
+    height: 450px;
+    overflow: hidden;
+    position: relative;
+    float: left;
+}
+
+img.phone {
+    float: left;
+    margin-right: 3em;
+    margin-bottom: 2em;
+    background-color: #FFF;
+    padding: 2em;
+    height: 400px;
+    width: 400px;
+}
+
+ul.phone-thumbs {
+    margin: 0;
+    list-style: none;
+}
+
+ul.phone-thumbs li {
+    border: 1px solid #000;
+    display: inline-block;
+    margin: 1em;
+    background-color: #FFF;
+}
+
+ul.phone-thumbs img {
+    height: 100px;
+    width: 100px;
+    padding: 1em;
+}
+
+
+ul.specs {
+    clear: both;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul.specs > li {
+    display: inline-block;
+    width: 200px;
+    vertical-align: top;
+}
+
+ul.specs > li > span {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+dl {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+ul.specs dt {
+    font-weight: bold;
+}
+
+dd {
+    margin-left: 0;
+}
+
+dt, dd {
+    line-height: 1.42857143;
+}

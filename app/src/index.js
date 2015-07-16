@@ -106,11 +106,172 @@ var SearchBar = React.createClass({
     );
   }
 });
+var PhoneSpec = React.createClass({
+  render: function(){
+    var phoneDetail = this.props.phoneDetail,
+        dim = [];
+    for (var i=0; i < phoneDetail.sizeAndWeight.dimensions.length; i++) {
+      dim.push(<dd>{phoneDetail.sizeAndWeight.dimensions[i]}</dd>);
+    }
+    return (
+        <ul className="specs">
+          <li>
+            <span>Availability and Networks</span>
+            <dl>
+              <dt>Availability</dt>
+              <dd>{phoneDetail.availability}</dd>
+            </dl>
+          </li>
+          <li>
+            <span>Battery</span>
+            <dl>
+              <dt>Type</dt>
+              <dd>{phoneDetail.battery.type}</dd>
+              <dt>Talk Time</dt>
+              <dd>{phoneDetail.battery.talkTime}</dd>
+              <dt>Standby time (max)</dt>
+              <dd>{phoneDetail.battery.standbyTime}</dd>
+            </dl>
+          </li>
+          <li>
+            <span>Storage and Memory</span>
+            <dl>
+              <dt>RAM</dt>
+              <dd>{phoneDetail.storage.ram}</dd>
+              <dt>Internal Storage</dt>
+              <dd>{phoneDetail.storage.flash}</dd>
+            </dl>
+          </li>
+          <li>
+            <span>Connectivity</span>
+            <dl>
+              <dt>Network Support</dt>
+              <dd>{phoneDetail.connectivity.cell}</dd>
+              <dt>WiFi</dt>
+              <dd>{phoneDetail.connectivity.wifi}</dd>
+              <dt>Bluetooth</dt>
+              <dd>{phoneDetail.connectivity.bluetooth ? '\u2713' : '\u2718'}</dd>
+              <dt>Infrared</dt>
+              <dd>{phoneDetail.connectivity.infrared ? '\u2713' : '\u2718' }</dd>
+              <dt>GPS</dt>
+              <dd>{phoneDetail.connectivity.gps ? '\u2713' : '\u2718'}</dd>
+            </dl>
+          </li>
+          <li>
+            <span>Android</span>
+            <dl>
+              <dt>OS Version</dt>
+              <dd>{phoneDetail.android.os}</dd>
+              <dt>UI</dt>
+              <dd>{phoneDetail.android.ui}</dd>
+            </dl>
+          </li>
+          <li>
+            <span>Size and Weight</span>
+            <dl>
+              <dt>Dimensions</dt>
+              <dd>{dim}</dd>
+              <dt>Weight</dt>
+              <dd>{phoneDetail.sizeAndWeight.weight}</dd>
+            </dl>
+          </li>
+          <li>
+            <span>Display</span>
+            <dl>
+              <dt>Screen size</dt>
+              <dd>{phoneDetail.display.screenSize}</dd>
+              <dt>Screen resolution</dt>
+              <dd>{phoneDetail.display.screenResolution}</dd>
+              <dt>Touch screen</dt>
+              <dd>{phoneDetail.display.touchScreen ? '\u2713' : '\u2718'}</dd>
+            </dl>
+          </li>
+          <li>
+            <span>Hardware</span>
+            <dl>
+              <dt>CPU</dt>
+              <dd>{phoneDetail.hardware.cpu}</dd>
+              <dt>USB</dt>
+              <dd>{phoneDetail.hardware.usb}</dd>
+              <dt>Audio / headphone jack</dt>
+              <dd>{phoneDetail.hardware.audioJack}</dd>
+              <dt>FM Radio</dt>
+              <dd>{phoneDetail.hardware.fmRadio ? '\u2713' : '\u2718'}</dd>
+              <dt>Accelerometer</dt>
+              <dd>{phoneDetail.hardware.accelerometer ? '\u2713' : '\u2718'}</dd>
+            </dl>
+          </li>
+          <li>
+            <span>Camera</span>
+            <dl>
+              <dt>Primary</dt>
+              <dd>{phoneDetail.camera.primary}</dd>
+              <dt>Features</dt>
+              <dd>{phoneDetail.camera.features.join(', ')}</dd>
+            </dl>
+          </li>
+          <li>
+            <span>Additional Features</span>
+            <dd>{phoneDetail.additionalFeatures}</dd>
+          </li>
+        </ul>
+    );
+  }
+});
+
 
 var PhoneDetail = React.createClass({
+  getInitialState: function() {
+    return {
+      phoneDetail: {
+        images: [],
+        battery: {},
+        storage: {},
+        connectivity: {},
+        android:{},
+        sizeAndWeight: {
+          dimensions: []
+        },
+        display: {},
+        hardware: {},
+        camera: {
+          features: []
+        }
+      }
+    };
+  },
+  componentWillMount: function() {
+    $.ajax({
+      url: 'phones/'+this.props.params.phoneId+'.json',
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({phoneDetail: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error('Phone Detail Loading Failed', status, err.toString());
+      }.bind(this)
+    });
+  },
   render: function() {
-    var phoneId = this.props.params.phoneId;
-    return (<div>{phoneId}</div>);
+    var phoneDetail = this.state.phoneDetail,
+        phoneImageList = [];
+    for (var i=0; i < phoneDetail.images.length; i++) {
+      phoneImageList.push(<li><img src={phoneDetail.images[i]}/></li>);
+    }
+    return (
+        <div>
+          <div className='phone-images'>
+            <img className="phone" src={phoneDetail.images[0]}/>
+          </div>
+          <h1 class="ng-binding ng-scope">{phoneDetail.name}</h1>
+          <p>{phoneDetail.description}</p>
+          <ul className="phone-thumbs">
+            {phoneImageList}
+          </ul>
+          <PhoneSpec phoneDetail={phoneDetail}></PhoneSpec>
+        </div>
+    );
   }
 });
 
