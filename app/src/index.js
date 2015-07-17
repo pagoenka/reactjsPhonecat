@@ -237,7 +237,8 @@ var PhoneDetail = React.createClass({
         camera: {
           features: []
         }
-      }
+      },
+      currentImage : ''
     };
   },
   componentWillMount: function() {
@@ -246,23 +247,33 @@ var PhoneDetail = React.createClass({
       dataType: 'json',
       cache: false,
       success: function(data) {
-        this.setState({phoneDetail: data});
+        this.setState({
+          phoneDetail: data,
+          currentImage: data.images[0]
+        });
       }.bind(this),
       error: function(xhr, status, err) {
         console.error('Phone Detail Loading Failed', status, err.toString());
       }.bind(this)
     });
   },
+  changeImage: function(i){
+    this.setState({
+      currentImage: this.state.phoneDetail.images[i]
+    });
+  },
   render: function() {
     var phoneDetail = this.state.phoneDetail,
         phoneImageList = [];
     for (var i=0; i < phoneDetail.images.length; i++) {
-      phoneImageList.push(<li><img src={phoneDetail.images[i]}/></li>);
+      phoneImageList.push(<li>
+          <img src={phoneDetail.images[i]} onClick={this.changeImage.bind(this,i)}/>
+        </li>);
     }
     return (
         <div>
           <div className='phone-images'>
-            <img className="phone" src={phoneDetail.images[0]}/>
+            <img className="phone" src={this.state.currentImage}/>
           </div>
           <h1 class="ng-binding ng-scope">{phoneDetail.name}</h1>
           <p>{phoneDetail.description}</p>
